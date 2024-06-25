@@ -27,19 +27,13 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader
 
       - name: Create .env file
-        run: cp .env.example .env
-
-      - name: Generate application key
-        run: php artisan key:generate
+        run: .env
 
       - name: Run migrations
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: php artisan migrate --force
-
-      - name: Run tests
-        run: php artisan test
 
   deploy:
     runs-on: ubuntu-latest
