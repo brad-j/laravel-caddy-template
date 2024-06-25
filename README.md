@@ -15,3 +15,5 @@ Blah
 cryface
 
 more error handling
+
+changed the server secret
