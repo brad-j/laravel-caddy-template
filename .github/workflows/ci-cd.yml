@@ -1,55 +1,58 @@
-name: CI/CD Pipeline
+name: Laravel
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build:
+  laravel-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
           extensions: mbstring, intl, gd, pdo, pdo_mysql, pdo_sqlite
-          coverage: none
 
-      - name: Install dependencies
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader
 
-      - name: Create .env file
-        run: .env
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
 
-      - name: Run migrations
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
-        run: php artisan migrate --force
+          DB_DATABASE: database/database.sqlite
+        run: php artisan test
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: laravel-tests
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.0"
+          php-version: "8.3"
           extensions: mbstring, intl, gd, pdo, pdo_mysql, pdo_sqlite
-          coverage: none
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader
 
       - name: Deploy to server
