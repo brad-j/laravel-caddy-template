@@ -17,3 +17,5 @@ cryface
 more error handling
 
 changed the server secret
+
+new SERVER secret
