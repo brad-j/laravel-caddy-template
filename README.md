@@ -19,3 +19,5 @@ more error handling
 changed the server secret
 
 new SERVER secret
+
+can't stop won't stop
