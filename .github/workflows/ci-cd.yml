@@ -1,4 +1,4 @@
-name: Laravel
+name: CI/CD Pipeline
 
 on:
   push:
@@ -33,8 +33,15 @@ jobs:
           mkdir -p database
           touch database/database.sqlite
 
+      - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: php artisan test
+
   deploy:
     runs-on: ubuntu-latest
+    needs: laravel-tests
 
     steps:
       - uses: actions/checkout@v2
@@ -45,18 +52,46 @@ jobs:
           php-version: "8.3"
           extensions: mbstring, intl, gd, pdo, pdo_mysql, pdo_sqlite
 
+      - name: Debug Environment Variables
+        run: |
+          echo "SERVER: $SERVER"
+          echo "REMOTE_PATH: $REMOTE_PATH"
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+
+      - name: Set up SSH Directory
+        run: |
+          mkdir -p ~/.ssh
+          ls -la ~/.ssh
+
+      - name: Add SSH Key
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ls -la ~/.ssh
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add Server to Known Hosts
+        run: |
+          ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+        env:
+          SERVER: ${{ secrets.SERVER }}
+
+      - name: Test SSH Connection
+        run: ssh -v $SERVER echo "SSH connection established"
+        env:
+          SERVER: ${{ secrets.SERVER }}
+
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader
 
-      - name: Deploy to server
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SERVER: ${{ secrets.SERVER }}
-          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+      - name: Deploy to Server
         run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan $SERVER >> ~/.ssh/known_hosts
           rsync -avz --delete --exclude='.github' --exclude='storage' --exclude='.env' ./ $SERVER:$REMOTE_PATH
           ssh $SERVER "cd $REMOTE_PATH && composer install --prefer-dist --no-progress --no-suggest --no-interaction --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+        env:
+          SERVER: ${{ secrets.SERVER }}
+          REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
