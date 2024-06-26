@@ -34,7 +34,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-          rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ brad@your_server_ip:/var/www/html/mydam
+          rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ brad@half.black:/var/www/html/mydam
 
       - name: Run Artisan commands
         run: |
