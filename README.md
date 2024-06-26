@@ -19,7 +19,7 @@ Click the Use this template button to create a repo.
 3. **Build Frontend Assets**:
 
     ```bash
-    npm run dev   # or `npm run prod` for production
+    npm run dev   # or `npm run build` for production
     ```
 
 4. **Set Up Environment File**:
