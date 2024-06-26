@@ -1,6 +1,6 @@
 # Laravel Caddy Template
 
-This template uses [Laravel 11](https://laravel.com/) (with [Breeze](https://laravel.com/docs/11.x/starter-kits#breeze-and-inertia)) with [Inertia(https://inertiajs.com/)], [React](https://react.dev/), and [Sqlite(https://www.sqlite.org/)] deployed to a VPS with [Caddy](https://caddyserver.com/).
+This template uses [Laravel 11](https://laravel.com/) (with [Breeze](https://laravel.com/docs/11.x/starter-kits#breeze-and-inertia)) with [Inertia](https://inertiajs.com/), [React](https://react.dev/), and [Sqlite](https://www.sqlite.org/) deployed to a VPS with [Caddy](https://caddyserver.com/).
 
 Click the Use this template button to create a repo.
 
