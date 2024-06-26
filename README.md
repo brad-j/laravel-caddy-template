@@ -53,11 +53,12 @@ To set up the GitHub Actions workflow for automatic deployment:
 
 1. **Configure Secrets**:
 
-    - Go to your repository on GitHub.
-    - Navigate to `Settings` > `Secrets and variables` > `Actions`.
-    - Add the following secrets:
-        - `SSH_PRIVATE_KEY`: Your private SSH key for the server.
-        - `SSH_KNOWN_HOSTS`: Known hosts entry for your server.
+    Go to your repository on GitHub.
+    Navigate to `Settings` > `Secrets and variables` > `Actions`.
+    Add the following secrets:
+
+    - `SSH_PRIVATE_KEY`: Your private SSH key for the server.
+    - `SSH_KNOWN_HOSTS`: Known hosts entry for your server.
 
 2. **Update the Workflow File**:
 
