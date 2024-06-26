@@ -61,17 +61,17 @@ To set up the GitHub Actions workflow for automatic deployment:
 
 2. **Update the Workflow File**:
 
-    - In `.github/workflows/deploy.yml`, replace the placeholders with your server details:
+    In `.github/workflows/deploy.yml`, replace the placeholders with your server details:
 
-        ```yaml
-        rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ USER@SERVER:/path/to/your/project
+    ```yaml
+    rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ USER@SERVER:/path/to/your/project
 
-        ssh -o StrictHostKeyChecking=no USER@SERVER "
-        sudo chown -R USER:www-data /path/to/your/project &&
-        sudo chmod -R 775 /path/to/your/project &&
-        sudo chmod -R 775 /path/to/your/project/storage &&
-        sudo chmod -R 775 /path/to/your/project/bootstrap/cache &&
-        sudo chmod 664 /path/to/your/project/database/*.sqlite &&
-        sudo chown USER:www-data /path/to/your/project/database/*.sqlite
-        "
-        ```
+    ssh -o StrictHostKeyChecking=no USER@SERVER "
+    sudo chown -R USER:www-data /path/to/your/project &&
+    sudo chmod -R 775 /path/to/your/project &&
+    sudo chmod -R 775 /path/to/your/project/storage &&
+    sudo chmod -R 775 /path/to/your/project/bootstrap/cache &&
+    sudo chmod 664 /path/to/your/project/database/*.sqlite &&
+    sudo chown USER:www-data /path/to/your/project/database/*.sqlite
+    "
+    ```
