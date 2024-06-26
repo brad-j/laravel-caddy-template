@@ -45,20 +45,25 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-          rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ brad@half.black:/var/www/html/mydam
+          rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ USER@SERVER:/path/to/your/project
 
       - name: Set Permissions
-
         run: |
-          ssh -o StrictHostKeyChecking=no brad@half.black "
-            sudo chown -R brad:www-data /var/www/html/mydam &&
-            sudo chmod -R 775 /var/www/html/mydam &&
-            sudo chmod -R 775 /var/www/html/mydam/storage &&
-            sudo chmod -R 775 /var/www/html/mydam/bootstrap/cache &&
-            sudo chmod 664 /var/www/html/mydam/database/*.sqlite &&
-            sudo chown brad:www-data /var/www/html/mydam/database/*.sqlite
+          ssh -o StrictHostKeyChecking=no USER@SERVER "
+            sudo chown -R USER:www-data /path/to/your/project &&
+            sudo chmod -R 775 /path/to/your/project &&
+            sudo chmod -R 775 /path/to/your/project/storage &&
+            sudo chmod -R 775 /path/to/your/project/bootstrap/cache &&
+            sudo chmod 664 /path/to/your/project/database/*.sqlite &&
+            sudo chown USER:www-data /path/to/your/project/database/*.sqlite
           "
 
       - name: Run Artisan commands
         run: |
-          ssh -o StrictHostKeyChecking=no brad@half.black "cd /var/www/html/mydam && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+          ssh -o StrictHostKeyChecking=no USER@SERVER "
+            cd /path/to/your/project &&
+            php artisan migrate --force &&
+            php artisan config:cache &&
+            php artisan route:cache &&
+            php artisan view:cache
+          "
