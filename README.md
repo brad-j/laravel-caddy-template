@@ -64,7 +64,7 @@ To set up the GitHub Actions workflow for automatic deployment:
     - In `.github/workflows/deploy.yml`, replace the placeholders with your server details:
 
         ```yaml
-        USER@SERVER:/path/to/your/project
+        rsync -avz --exclude='storage/' --exclude='.env' --exclude='.git' --exclude='.github' ./ USER@SERVER:/path/to/your/project
 
         ssh -o StrictHostKeyChecking=no USER@SERVER "
         sudo chown -R USER:www-data /path/to/your/project &&
