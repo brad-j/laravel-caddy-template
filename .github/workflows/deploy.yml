@@ -46,6 +46,7 @@ jobs:
             sudo chmod -R 775 /var/www/html/mydam/bootstrap/cache &&
             sudo chmod 664 /var/www/html/mydam/database/*.sqlite &&
             sudo chown brad:www-data /var/www/html/mydam/database/*.sqlite
+          "
 
       - name: Run Artisan commands
         run: |
