@@ -2,9 +2,9 @@
 
 This template uses [Laravel 11](https://laravel.com/) (with [Breeze](https://laravel.com/docs/11.x/starter-kits#breeze-and-inertia)) with [Inertia](https://inertiajs.com/), [React](https://react.dev/), and [Sqlite](https://www.sqlite.org/) deployed to a VPS with [Caddy](https://caddyserver.com/).
 
-Click the Use this template button to create a repo.
+Click the green **Use this template** button to create a repo.
 
-`git clone` the repo and run the following commands:
+`git clone` the new repo and run the following commands:
 
 1. **Install Composer Dependencies**:
 
@@ -65,4 +65,13 @@ To set up the GitHub Actions workflow for automatic deployment:
 
         ```yaml
         USER@SERVER:/path/to/your/project
+
+        ssh -o StrictHostKeyChecking=no USER@SERVER "
+        sudo chown -R USER:www-data /path/to/your/project &&
+        sudo chmod -R 775 /path/to/your/project &&
+        sudo chmod -R 775 /path/to/your/project/storage &&
+        sudo chmod -R 775 /path/to/your/project/bootstrap/cache &&
+        sudo chmod 664 /path/to/your/project/database/*.sqlite &&
+        sudo chown USER:www-data /path/to/your/project/database/*.sqlite
+        "
         ```
