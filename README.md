@@ -1,3 +1,7 @@
-# MyDAM
+# Laravel Caddy Template
 
-Fixing permissions.
+Laravel 11, Inertia, React
+
+Caddy Server
+
+Github Actions
