@@ -1,1 +1,3 @@
 # MyDAM
+
+Fixing permissions.
