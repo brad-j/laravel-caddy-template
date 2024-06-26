@@ -40,12 +40,12 @@ jobs:
 
         run: |
           ssh -o StrictHostKeyChecking=no brad@half.black "
-            sudo chown -R brad:www-data /var/www/html/mydam &&
-            sudo chmod -R 775 /var/www/html/mydam &&
-            sudo chmod -R 775 /var/www/html/mydam/storage &&
-            sudo chmod -R 775 /var/www/html/mydam/bootstrap/cache &&
-            sudo chmod 664 /var/www/html/mydam/database/*.sqlite &&
-            sudo chown brad:www-data /var/www/html/mydam/database/*.sqlite
+            chown -R brad:www-data /var/www/html/mydam &&
+            chmod -R 775 /var/www/html/mydam &&
+            chmod -R 775 /var/www/html/mydam/storage &&
+            chmod -R 775 /var/www/html/mydam/bootstrap/cache &&
+            chmod 664 /var/www/html/mydam/database/*.sqlite &&
+            chown brad:www-data /var/www/html/mydam/database/*.sqlite
           "
 
       - name: Run Artisan commands
